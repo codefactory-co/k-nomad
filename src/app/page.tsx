@@ -1,15 +1,28 @@
+"use client";
+
+import { useState } from "react";
 import HeroSection from "@/components/home/HeroSection";
 import TopCities from "@/components/home/TopCities";
-import LiveStats from "@/components/home/LiveStats";
-import RegionalTabs from "@/components/home/RegionalTabs";
+
+export interface FilterState {
+  budget: string;
+  region: string;
+  environment: string;
+  season: string;
+}
 
 export default function Home() {
+  const [filters, setFilters] = useState<FilterState>({
+    budget: "",
+    region: "",
+    environment: "",
+    season: ""
+  });
+
   return (
     <>
-      <HeroSection />
-      <TopCities />
-      <LiveStats />
-      <RegionalTabs />
+      <HeroSection filters={filters} setFilters={setFilters} />
+      <TopCities filters={filters} />
     </>
   );
 }

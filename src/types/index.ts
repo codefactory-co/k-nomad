@@ -2,7 +2,6 @@ export interface City {
   id: number;
   name: string;
   tagline: string;
-  rating: number;
   cost: string;
   internet: string;
   likes: number;
@@ -20,13 +19,21 @@ export interface City {
     community: number;
   };
   region: string;
+  budget: string;
+  environment: string;
+  bestSeason: string;
   description?: string;
 }
 
 export interface Stats {
   activeNomads: number;
   totalCities: number;
-  avgRating: number;
 }
 
-export type Region = '수도권' | '경상권' | '전라권' | '강원권' | '제주권' | '충청권';
+export type Region = '전체' | '수도권' | '경상도' | '전라도' | '강원도' | '제주도' | '충청도';
+
+export type Budget = '100만원' | '100~200만원' | '200만원+';
+
+export type Environment = '자연친화' | '도심선호' | '카페작업' | '코워킹 필수';
+
+export type Season = '봄' | '여름' | '가을' | '겨울';

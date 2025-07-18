@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Search, MapPin, Briefcase, Home, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,15 +9,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { FilterState } from "@/app/page";
 
-export default function HeroSection() {
-  const [budget, setBudget] = useState("");
-  const [region, setRegion] = useState("");
-  const [environment, setEnvironment] = useState("");
-  const [season, setSeason] = useState("");
+interface HeroSectionProps {
+  filters: FilterState;
+  setFilters: (filters: FilterState) => void;
+}
+
+export default function HeroSection({ filters, setFilters }: HeroSectionProps) {
 
   const handleSearch = () => {
-    console.log("Search with filters:", { budget, region, environment, season });
+    // Search functionality - filters are already applied through parent component
+  };
+  
+  const handleReset = () => {
+    setFilters({
+      budget: "",
+      region: "",
+      environment: "",
+      season: ""
+    });
   };
 
   return (
@@ -47,15 +57,14 @@ export default function HeroSection() {
                 </div>
                 예산
               </label>
-              <Select value={budget} onValueChange={setBudget}>
+              <Select value={filters.budget} onValueChange={(value) => setFilters({...filters, budget: value})}>
                 <SelectTrigger className="h-12 border-2 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="월 생활비 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="under-100">100만원 이하</SelectItem>
-                  <SelectItem value="100-150">100-150만원</SelectItem>
-                  <SelectItem value="150-200">150-200만원</SelectItem>
-                  <SelectItem value="over-200">200만원 이상</SelectItem>
+                  <SelectItem value="100">100만원</SelectItem>
+                  <SelectItem value="100-200">100~200만원</SelectItem>
+                  <SelectItem value="200+">200만원+</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -68,18 +77,18 @@ export default function HeroSection() {
                 </div>
                 지역
               </label>
-              <Select value={region} onValueChange={setRegion}>
+              <Select value={filters.region} onValueChange={(value) => setFilters({...filters, region: value})}>
                 <SelectTrigger className="h-12 border-2 hover:border-green-300 focus:border-green-500 transition-colors">
                   <SelectValue placeholder="선호 지역 선택" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">전체</SelectItem>
-                  <SelectItem value="capital">수도권</SelectItem>
-                  <SelectItem value="gyeongsang">경상권</SelectItem>
-                  <SelectItem value="jeolla">전라권</SelectItem>
-                  <SelectItem value="gangwon">강원권</SelectItem>
-                  <SelectItem value="jeju">제주권</SelectItem>
-                  <SelectItem value="chungcheong">충청권</SelectItem>
+                  <SelectItem value="수도권">수도권</SelectItem>
+                  <SelectItem value="경상도">경상도</SelectItem>
+                  <SelectItem value="전라도">전라도</SelectItem>
+                  <SelectItem value="강원도">강원도</SelectItem>
+                  <SelectItem value="제주도">제주도</SelectItem>
+                  <SelectItem value="충청도">충청도</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -92,15 +101,15 @@ export default function HeroSection() {
                 </div>
                 환경
               </label>
-              <Select value={environment} onValueChange={setEnvironment}>
+              <Select value={filters.environment} onValueChange={(value) => setFilters({...filters, environment: value})}>
                 <SelectTrigger className="h-12 border-2 hover:border-purple-300 focus:border-purple-500 transition-colors">
                   <SelectValue placeholder="업무 환경 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="coworking">코워킹 필수</SelectItem>
-                  <SelectItem value="cafe">카페 작업</SelectItem>
-                  <SelectItem value="nature">자연 친화</SelectItem>
-                  <SelectItem value="city">도심 선호</SelectItem>
+                  <SelectItem value="자연친화">자연친화</SelectItem>
+                  <SelectItem value="도심선호">도심선호</SelectItem>
+                  <SelectItem value="카페작업">카페작업</SelectItem>
+                  <SelectItem value="코워킹 필수">코워킹 필수</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -113,22 +122,22 @@ export default function HeroSection() {
                 </div>
                 계절
               </label>
-              <Select value={season} onValueChange={setSeason}>
+              <Select value={filters.season} onValueChange={(value) => setFilters({...filters, season: value})}>
                 <SelectTrigger className="h-12 border-2 hover:border-orange-300 focus:border-orange-500 transition-colors">
-                  <SelectValue placeholder="방문 시기 선택" />
+                  <SelectValue placeholder="최고 계절 선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="spring">봄 (3-5월)</SelectItem>
-                  <SelectItem value="summer">여름 (6-8월)</SelectItem>
-                  <SelectItem value="fall">가을 (9-11월)</SelectItem>
-                  <SelectItem value="winter">겨울 (12-2월)</SelectItem>
+                  <SelectItem value="봄">봄</SelectItem>
+                  <SelectItem value="여름">여름</SelectItem>
+                  <SelectItem value="가을">가을</SelectItem>
+                  <SelectItem value="겨울">겨울</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           {/* Search Button */}
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
             <Button
               onClick={handleSearch}
               size="lg"
@@ -136,6 +145,14 @@ export default function HeroSection() {
             >
               <Search className="w-5 h-5 mr-3" />
               완벽한 도시 찾기
+            </Button>
+            <Button
+              onClick={handleReset}
+              size="lg"
+              variant="outline"
+              className="px-8 py-4 text-lg font-semibold border-2 hover:bg-muted/50 transition-all duration-200"
+            >
+              초기화
             </Button>
           </div>
         </div>

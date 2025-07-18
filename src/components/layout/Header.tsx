@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin, Menu, Search } from "lucide-react";
+import { MapPin, Menu, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -11,8 +11,12 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { createClient } from "@/utils/supabase/server";
+import UserMenu from "@/components/auth/UserMenu";
 
-export default function Header() {
+export default async function Header() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -33,43 +37,11 @@ export default function Header() {
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/cities" className={navigationMenuTriggerStyle()}>
-                    도시탐색
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/compare" className={navigationMenuTriggerStyle()}>
-                    비교하기
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/community" className={navigationMenuTriggerStyle()}>
-                    커뮤니티
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/guides" className={navigationMenuTriggerStyle()}>
-                    가이드
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
 
-        {/* Search Bar and Theme Toggle */}
+        {/* Search Bar, Login Button and Theme Toggle */}
         <div className="hidden md:flex items-center space-x-4">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -78,6 +50,16 @@ export default function Header() {
               className="pl-8 w-[200px]"
             />
           </div>
+          {user ? (
+            <UserMenu user={user} />
+          ) : (
+            <Button asChild variant="outline">
+              <Link href="/login" className="flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                <span>로그인</span>
+              </Link>
+            </Button>
+          )}
           <ThemeToggle />
         </div>
 
@@ -93,23 +75,21 @@ export default function Header() {
               <Link href="/" className="text-lg font-medium">
                 홈
               </Link>
-              <Link href="/cities" className="text-lg font-medium">
-                도시탐색
-              </Link>
-              <Link href="/compare" className="text-lg font-medium">
-                비교하기
-              </Link>
-              <Link href="/community" className="text-lg font-medium">
-                커뮤니티
-              </Link>
-              <Link href="/guides" className="text-lg font-medium">
-                가이드
-              </Link>
-              <div className="pt-4">
+              <div className="pt-4 space-y-4">
                 <Input
                   placeholder="도시 검색..."
                   className="w-full"
                 />
+                {user ? (
+                  <UserMenu user={user} />
+                ) : (
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href="/login" className="flex items-center space-x-2">
+                      <User className="h-4 w-4" />
+                      <span>로그인</span>
+                    </Link>
+                  </Button>
+                )}
               </div>
             </nav>
           </SheetContent>
