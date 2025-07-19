@@ -84,33 +84,31 @@ export default function CityCard({ city }: CityCardProps) {
       </div>
 
       <CardHeader className="pb-3">
-        <div className="flex justify-end">
-          <div className="flex gap-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 px-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleLike();
-              }}
-            >
-              <ThumbsUp className={`w-4 h-4 mr-1 ${userChoice === 'like' ? 'text-red-500 fill-red-500' : ''}`} />
-              {currentLikes}
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-8 px-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDislike();
-              }}
-            >
-              <ThumbsDown className={`w-4 h-4 mr-1 ${userChoice === 'dislike' ? 'text-gray-500 fill-gray-500' : ''}`} />
-              {currentDislikes}
-            </Button>
-          </div>
+        <div className="flex justify-between items-center">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 px-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+            }}
+          >
+            <ThumbsUp className={`w-4 h-4 mr-1 ${userChoice === 'like' ? 'text-red-500 fill-red-500' : ''}`} />
+            {currentLikes}
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 px-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDislike();
+            }}
+          >
+            <ThumbsDown className={`w-4 h-4 mr-1 ${userChoice === 'dislike' ? 'text-gray-500 fill-gray-500' : ''}`} />
+            {currentDislikes}
+          </Button>
         </div>
       </CardHeader>
 
