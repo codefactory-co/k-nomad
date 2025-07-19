@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ThumbsUp, ThumbsDown, MapPin, Wallet, TreePine, Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ interface CityCardProps {
 }
 
 export default function CityCard({ city }: CityCardProps) {
+  const router = useRouter();
   const [userChoice, setUserChoice] = useState<'like' | 'dislike' | null>(null);
   const [currentLikes, setCurrentLikes] = useState(city.likes);
   const [currentDislikes, setCurrentDislikes] = useState(city.dislikes);
@@ -65,8 +67,12 @@ export default function CityCard({ city }: CityCardProps) {
     }
   };
 
+  const handleCardClick = () => {
+    router.push(`/cities/${city.id}`);
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={handleCardClick}>
       {/* City Image */}
       <div className="aspect-[4/3] relative bg-gradient-to-br from-blue-400 to-blue-600">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -84,7 +90,10 @@ export default function CityCard({ city }: CityCardProps) {
               variant="ghost" 
               size="sm" 
               className="h-8 px-2"
-              onClick={handleLike}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike();
+              }}
             >
               <ThumbsUp className={`w-4 h-4 mr-1 ${userChoice === 'like' ? 'text-red-500 fill-red-500' : ''}`} />
               {currentLikes}
@@ -93,7 +102,10 @@ export default function CityCard({ city }: CityCardProps) {
               variant="ghost" 
               size="sm" 
               className="h-8 px-2"
-              onClick={handleDislike}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDislike();
+              }}
             >
               <ThumbsDown className={`w-4 h-4 mr-1 ${userChoice === 'dislike' ? 'text-gray-500 fill-gray-500' : ''}`} />
               {currentDislikes}
