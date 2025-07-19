@@ -1,4 +1,4 @@
-import { Users, MapPin, TrendingUp, Star } from "lucide-react";
+import { Users, MapPin, TrendingUp, ThumbsUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function LiveStats() {
@@ -20,12 +20,12 @@ export default function LiveStats() {
       color: "text-green-600",
     },
     {
-      icon: Star,
-      label: "평균 만족도",
-      value: "4.2/5",
-      description: "사용자 평가",
-      trend: "+0.3",
-      color: "text-yellow-600",
+      icon: ThumbsUp,
+      label: "좋아요 비율",
+      value: "87%",
+      description: "긍정적 평가",
+      trend: "+5%",
+      color: "text-red-600",
     },
   ];
 

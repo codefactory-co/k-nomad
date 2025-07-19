@@ -1,7 +1,9 @@
-import Link from "next/link";
-import { Star, ThumbsUp, ThumbsDown, Wifi, DollarSign } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ThumbsUp, ThumbsDown, MapPin, Wallet, TreePine, Calendar } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { City } from "@/types";
 
@@ -10,8 +12,67 @@ interface CityCardProps {
 }
 
 export default function CityCard({ city }: CityCardProps) {
+  const router = useRouter();
+  const [userChoice, setUserChoice] = useState<'like' | 'dislike' | null>(null);
+  const [currentLikes, setCurrentLikes] = useState(city.likes);
+  const [currentDislikes, setCurrentDislikes] = useState(city.dislikes);
+
+  // 로컬 스토리지에서 사용자 선택 상태 로드
+  useEffect(() => {
+    const savedChoice = localStorage.getItem(`city-${city.id}-choice`);
+    if (savedChoice === 'like' || savedChoice === 'dislike') {
+      setUserChoice(savedChoice);
+    }
+  }, [city.id]);
+
+  // 좋아요 버튼 클릭 핸들러
+  const handleLike = () => {
+    if (userChoice === 'like') {
+      // 좋아요 취소
+      setUserChoice(null);
+      setCurrentLikes(prev => prev - 1);
+      localStorage.removeItem(`city-${city.id}-choice`);
+    } else if (userChoice === 'dislike') {
+      // 싫어요에서 좋아요로 변경
+      setUserChoice('like');
+      setCurrentLikes(prev => prev + 1);
+      setCurrentDislikes(prev => prev - 1);
+      localStorage.setItem(`city-${city.id}-choice`, 'like');
+    } else {
+      // 좋아요 선택
+      setUserChoice('like');
+      setCurrentLikes(prev => prev + 1);
+      localStorage.setItem(`city-${city.id}-choice`, 'like');
+    }
+  };
+
+  // 싫어요 버튼 클릭 핸들러
+  const handleDislike = () => {
+    if (userChoice === 'dislike') {
+      // 싫어요 취소
+      setUserChoice(null);
+      setCurrentDislikes(prev => prev - 1);
+      localStorage.removeItem(`city-${city.id}-choice`);
+    } else if (userChoice === 'like') {
+      // 좋아요에서 싫어요로 변경
+      setUserChoice('dislike');
+      setCurrentDislikes(prev => prev + 1);
+      setCurrentLikes(prev => prev - 1);
+      localStorage.setItem(`city-${city.id}-choice`, 'dislike');
+    } else {
+      // 싫어요 선택
+      setUserChoice('dislike');
+      setCurrentDislikes(prev => prev + 1);
+      localStorage.setItem(`city-${city.id}-choice`, 'dislike');
+    }
+  };
+
+  const handleCardClick = () => {
+    router.push(`/cities/${city.id}`);
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={handleCardClick}>
       {/* City Image */}
       <div className="aspect-[4/3] relative bg-gradient-to-br from-blue-400 to-blue-600">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -23,74 +84,70 @@ export default function CityCard({ city }: CityCardProps) {
       </div>
 
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-            <span className="font-semibold text-lg">{city.rating}/5.0</span>
-          </div>
+        <div className="flex justify-end">
           <div className="flex gap-3">
-            <Button variant="ghost" size="sm" className="h-8 px-2">
-              <ThumbsUp className="w-4 h-4 mr-1" />
-              {city.likes}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 px-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike();
+              }}
+            >
+              <ThumbsUp className={`w-4 h-4 mr-1 ${userChoice === 'like' ? 'text-red-500 fill-red-500' : ''}`} />
+              {currentLikes}
             </Button>
-            <Button variant="ghost" size="sm" className="h-8 px-2">
-              <ThumbsDown className="w-4 h-4 mr-1" />
-              {city.dislikes}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 px-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDislike();
+              }}
+            >
+              <ThumbsDown className={`w-4 h-4 mr-1 ${userChoice === 'dislike' ? 'text-gray-500 fill-gray-500' : ''}`} />
+              {currentDislikes}
             </Button>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        {/* Key Info */}
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-muted-foreground" />
-            <span>{city.cost}</span>
+      <CardContent className="pt-0">
+        {/* Key Info - Key-Value Format */}
+        <div className="space-y-3">
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground flex items-center gap-2">
+              <Wallet className="w-4 h-4" />
+              예산
+            </span>
+            <span className="font-medium">{city.budget}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Wifi className="w-4 h-4 text-muted-foreground" />
-            <span>{city.internet}</span>
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              지역
+            </span>
+            <span className="font-medium">{city.region}</span>
           </div>
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2">
-          {city.badges.map((badge) => (
-            <Badge key={badge} variant="secondary">
-              {badge}
-            </Badge>
-          ))}
-        </div>
-
-        {/* Score Preview */}
-        <div className="space-y-2">
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">생활비</span>
-              <span className="font-medium">{city.scores.livingCost}/5</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">인터넷</span>
-              <span className="font-medium">{city.scores.internet}/5</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">업무환경</span>
-              <span className="font-medium">{city.scores.workEnvironment}/5</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">안전도</span>
-              <span className="font-medium">{city.scores.safety}/5</span>
-            </div>
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground flex items-center gap-2">
+              <TreePine className="w-4 h-4" />
+              환경
+            </span>
+            <span className="font-medium">{city.environment}</span>
+          </div>
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              최고 계절
+            </span>
+            <span className="font-medium">{city.bestSeason}</span>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter>
-        <Link href={`/cities/${city.id}`} className="w-full">
-          <Button className="w-full">자세히보기</Button>
-        </Link>
-      </CardFooter>
     </Card>
   );
 }

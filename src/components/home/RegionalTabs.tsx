@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, ChevronRight } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ export default function RegionalTabs() {
   const [selectedRegion, setSelectedRegion] = useState("all");
 
   const getCitiesByRegion = (regionName: string) => {
-    let cities = regionName === "all" 
+    const cities = regionName === "all" 
       ? [...citiesData] 
       : citiesData.filter((city) => city.region === regionName);
     
@@ -78,9 +78,9 @@ export default function RegionalTabs() {
                               <h4 className="font-semibold text-lg">{city.name}</h4>
                               <p className="text-sm text-muted-foreground">{city.tagline}</p>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <span className="text-sm font-medium">{city.rating}</span>
-                              <span className="text-yellow-500">★</span>
+                            <div className="flex items-center gap-2 text-sm">
+                              <span className="text-red-500">👍 {city.likes}</span>
+                              <span className="text-gray-500">👎 {city.dislikes}</span>
                             </div>
                           </div>
 
@@ -98,14 +98,6 @@ export default function RegionalTabs() {
                             ))}
                           </div>
 
-                          <Button
-                            variant="ghost"
-                            className="w-full justify-between"
-                            onClick={() => console.log(`Navigate to ${city.name}`)}
-                          >
-                            자세히 보기
-                            <ChevronRight className="w-4 h-4" />
-                          </Button>
                         </div>
                       ))}
                     </div>
@@ -123,7 +115,9 @@ export default function RegionalTabs() {
         <div className="text-center mt-12">
           <Button
             size="lg"
-            onClick={() => console.log("Navigate to all cities")}
+            onClick={() => {
+              // Navigate to all cities - functionality can be added later
+            }}
           >
             모든 도시 둘러보기
           </Button>

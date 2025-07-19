@@ -25,23 +25,18 @@ export default function Footer() {
             <h3 className="font-semibold">빠른 링크</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/cities" className="text-muted-foreground hover:text-foreground">
-                  도시 탐색
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
+                  홈
                 </Link>
               </li>
               <li>
-                <Link href="/compare" className="text-muted-foreground hover:text-foreground">
-                  도시 비교
+                <Link href="/login" className="text-muted-foreground hover:text-foreground">
+                  로그인
                 </Link>
               </li>
               <li>
-                <Link href="/community" className="text-muted-foreground hover:text-foreground">
-                  커뮤니티
-                </Link>
-              </li>
-              <li>
-                <Link href="/guides" className="text-muted-foreground hover:text-foreground">
-                  노마드 가이드
+                <Link href="/register" className="text-muted-foreground hover:text-foreground">
+                  회원가입
                 </Link>
               </li>
             </ul>
@@ -52,22 +47,22 @@ export default function Footer() {
             <h3 className="font-semibold">인기 도시</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/cities/1" className="text-muted-foreground hover:text-foreground">
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
                   제주
                 </Link>
               </li>
               <li>
-                <Link href="/cities/2" className="text-muted-foreground hover:text-foreground">
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
                   서울
                 </Link>
               </li>
               <li>
-                <Link href="/cities/3" className="text-muted-foreground hover:text-foreground">
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
                   부산
                 </Link>
               </li>
               <li>
-                <Link href="/cities/5" className="text-muted-foreground hover:text-foreground">
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
                   강릉
                 </Link>
               </li>
