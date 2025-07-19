@@ -58,7 +58,7 @@ export default function HeroSection({ filters, setFilters }: HeroSectionProps) {
                 예산
               </label>
               <Select value={filters.budget} onValueChange={(value) => setFilters({...filters, budget: value})}>
-                <SelectTrigger className="h-12 border-2 hover:border-blue-300 focus:border-blue-500 transition-colors">
+                <SelectTrigger className="w-full h-12 border-2 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="월 생활비 선택" />
                 </SelectTrigger>
                 <SelectContent>
@@ -78,7 +78,7 @@ export default function HeroSection({ filters, setFilters }: HeroSectionProps) {
                 지역
               </label>
               <Select value={filters.region} onValueChange={(value) => setFilters({...filters, region: value})}>
-                <SelectTrigger className="h-12 border-2 hover:border-green-300 focus:border-green-500 transition-colors">
+                <SelectTrigger className="w-full h-12 border-2 hover:border-green-300 focus:border-green-500 transition-colors">
                   <SelectValue placeholder="선호 지역 선택" />
                 </SelectTrigger>
                 <SelectContent>
@@ -102,7 +102,7 @@ export default function HeroSection({ filters, setFilters }: HeroSectionProps) {
                 환경
               </label>
               <Select value={filters.environment} onValueChange={(value) => setFilters({...filters, environment: value})}>
-                <SelectTrigger className="h-12 border-2 hover:border-purple-300 focus:border-purple-500 transition-colors">
+                <SelectTrigger className="w-full h-12 border-2 hover:border-purple-300 focus:border-purple-500 transition-colors">
                   <SelectValue placeholder="업무 환경 선택" />
                 </SelectTrigger>
                 <SelectContent>
@@ -123,7 +123,7 @@ export default function HeroSection({ filters, setFilters }: HeroSectionProps) {
                 계절
               </label>
               <Select value={filters.season} onValueChange={(value) => setFilters({...filters, season: value})}>
-                <SelectTrigger className="h-12 border-2 hover:border-orange-300 focus:border-orange-500 transition-colors">
+                <SelectTrigger className="w-full h-12 border-2 hover:border-orange-300 focus:border-orange-500 transition-colors">
                   <SelectValue placeholder="최고 계절 선택" />
                 </SelectTrigger>
                 <SelectContent>
